@@ -64,7 +64,7 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
   <div class="songsSection" id="songs">
     <div class="sectionHeader">
       <div>
-        <h1 class="sectionTitle">Available Songs</h1>
+        <h1 class="sectionTitle">Feature Songs</h1>
         <p class="sectionSubtitle">Tap a song to rate it out of 5 and leave a comment.</p>
       </div>
     </div>
