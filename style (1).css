@@ -1,7 +1,8 @@
 body {
-  background-color: white;
-  font-family: Arial;
+  background: linear-gradient(180deg, #f6fbff 0%, #ffffff 60%);
+  font-family: 'Inter', Arial, sans-serif;
   margin: 0;
+  color: #1f2937;
 }
 
 /* NAVBAR */
@@ -91,8 +92,25 @@ body {
   padding: 50px;
 }
 
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
 .sectionTitle {
-  text-align: center;
+  text-align: left;
+  margin: 0;
+  font-size: 34px;
+}
+
+.sectionSubtitle {
+  margin: 8px 0 0;
+  color: #4b5563;
+  max-width: 560px;
 }
 
 .songsContainer {
@@ -101,26 +119,80 @@ body {
   gap: 20px;
 }
 
-.card {
-  background-color: white;
-  border: 1px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  width: 250px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.card:hover {
-  opacity: 0.8;
-  transform: scale(1.03);
-}
-
 .imageBox {
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  height: 180px;
+  border-radius: 0 0 16px 16px;
+  position: relative;
+}
+
+.imageBox::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.4), transparent 45%);
+}
+
   background-color: #0172B0;
   height: 180px;
   border-radius: 10px;
   margin-bottom: 20px;
+}
+
+/* PROFILE */
+
+.profileSection {
+  padding: 50px;
+  background: #f8fbff;
+}
+
+.profileMessage {
+  margin-bottom: 24px;
+  color: #475569;
+}
+
+.profileList {
+  display: grid;
+  gap: 16px;
+}
+
+.profileCard {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: white;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.04);
+}
+
+.profileCard h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.profileArtist {
+  margin: 8px 0 0;
+  color: #475569;
+}
+
+.profileRating {
+  margin-top: 12px;
+  color: #f59e0b;
+  font-size: 16px;
+}
+
+.profileComment {
+  margin-top: 16px;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.profileEmpty {
+  border: 2px dashed rgba(99, 102, 241, 0.2);
+  background: rgba(232, 242, 254, 0.75);
+  color: #334155;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
 }
 
 /* FOOTER */
@@ -301,8 +373,38 @@ body {
 }
 .modal-sub {
   margin: 0 0 22px;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.65);
   font-size: 14px;
+}
+
+.starRow {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.starButton {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.65);
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.starButton:hover,
+.starButton.active {
+  background: #38bdf8;
+  color: white;
+  border-color: rgba(56, 189, 248, 0.7);
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
 }
 
 /* Form groups */

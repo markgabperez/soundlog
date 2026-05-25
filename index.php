@@ -10,10 +10,10 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SoundLog</title>
-  <link rel="stylesheet" href="style.css"></head>
+  <link rel="stylesheet" href="style (1).css"></head>
 <body>
 
-//navbar
+<!-- navbar -->
   <div class="navbar">
     <div class="logoSection">
       <img src="https://github.com/Kola0222/WebDev-SoundLog/blob/main/soundlog%20(1).png?raw=true" width="60" alt="SoundLog">
@@ -26,10 +26,11 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
     <div class="links">
       <a href="#home">Home</a>
       <a href="#songs">Songs</a>
+      <a href="#profile">Profile</a>
       <a href="#about">About</a>
     </div>
 
-// auth area
+<!-- auth area -->
     <div class="nav-auth" id="navAuth">
       <?php if ($loggedIn): ?>
         <div class="user-pill">
@@ -59,36 +60,66 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
     </div>
   </div>
 
-// songs
+<!-- songs -->
   <div class="songsSection" id="songs">
-    <h1 class="sectionTitle">Featured Songs</h1>
-    <br>
+    <div class="sectionHeader">
+      <div>
+        <h1 class="sectionTitle">Featured Songs</h1>
+        <p class="sectionSubtitle">Tap a song to rate it out of 5 and leave a comment.</p>
+      </div>
+    </div>
+
     <div class="songsContainer">
-      <button class="card">
+      <?php
+        $featured = [
+          ['title' => 'Blinding Lights', 'artist' => 'The Weeknd'],
+          ['title' => 'Numb', 'artist' => 'Linkin Park'],
+          ['title' => 'Die With A Smile', 'artist' => 'Lady Gaga & Bruno Mars'],
+        ];
+        foreach ($featured as $song):
+      ?>
+      <button class="card song-card" data-title="<?= htmlspecialchars($song['title']) ?>" data-artist="<?= htmlspecialchars($song['artist']) ?>">
         <div class="imageBox"></div>
-        <h2>Blinding Lights</h2>
-        <p>The Weeknd</p>
+        <div class="cardContent">
+          <h2><?= htmlspecialchars($song['title']) ?></h2>
+          <p><?= htmlspecialchars($song['artist']) ?></p>
+          <span class="cardAction">Rate this song</span>
+        </div>
       </button>
-      <button class="card">
-        <div class="imageBox"></div>
-        <h2>Numb</h2>
-        <p>Linkin Park</p>
-      </button>
-      <button class="card">
-        <div class="imageBox"></div>
-        <h2>Die With A Smile</h2>
-        <p>Lady Gaga & Bruno Mars</p>
-      </button>
+      <?php endforeach; ?>
     </div>
   </div>
 
-//footer
+  <div class="profileSection" id="profile">
+    <div class="sectionHeader">
+      <div>
+        <h1 class="sectionTitle">Your Rated Songs</h1>
+        <p class="sectionSubtitle">Saved reviews appear here in your profile.</p>
+      </div>
+    </div>
+
+    <div class="profileMessage">
+      <?php if ($loggedIn): ?>
+        <p>Rate a featured song to add it to your profile. Your ratings are saved automatically.</p>
+      <?php else: ?>
+        <p>Please sign in to rate songs and build your music log.</p>
+      <?php endif; ?>
+    </div>
+
+    <div class="profileList" id="profileList">
+      <?php if (!$loggedIn): ?>
+        <div class="profileEmpty">No ratings yet — log in and rate a song.</div>
+      <?php endif; ?>
+    </div>
+  </div>
+
+<!-- footer -->
   <div class="footer" id="about">
     <p>© 2026 SoundLog</p>
     <p>Web Development 1 Project</p>
   </div>
 
-//login
+<!-- login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal">
       <button class="modal-close" id="closeLogin">✕</button>
@@ -120,7 +151,7 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
     </div>
   </div>
 
-//signup
+<!-- signup -->
   <div class="modal-overlay" id="signupModal">
     <div class="modal">
       <button class="modal-close" id="closeSignup">✕</button>
@@ -156,6 +187,41 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
     </div>
   </div>
 
+  <div class="modal-overlay" id="ratingModal">
+    <div class="modal">
+      <button class="modal-close" id="closeRating">✕</button>
+      <div class="modal-logo">
+        <img src="https://github.com/Kola0222/WebDev-SoundLog/blob/main/soundlog%20(1).png?raw=true" alt="SoundLog">
+        <span>SoundLog</span>
+      </div>
+      <h2>Rate this song</h2>
+      <p class="modal-sub">Give it a star rating and leave a note for your profile.</p>
+      <div class="toast" id="ratingToast"></div>
+      <div class="form-group">
+        <label>Song</label>
+        <input type="text" id="ratingSong" readonly>
+      </div>
+      <div class="form-group">
+        <label>Artist</label>
+        <input type="text" id="ratingArtist" readonly>
+      </div>
+      <div class="form-group">
+        <label>Rating</label>
+        <div class="starRow" id="ratingStars">
+          <button type="button" class="starButton" data-value="1">★</button>
+          <button type="button" class="starButton" data-value="2">★</button>
+          <button type="button" class="starButton" data-value="3">★</button>
+          <button type="button" class="starButton" data-value="4">★</button>
+          <button type="button" class="starButton" data-value="5">★</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Comment</label>
+        <textarea id="ratingComment" rows="4" placeholder="What makes this track stand out?"></textarea>
+      </div>
+      <button class="btn-submit" id="ratingSave">Save Rating</button>
+    </div>
+  </div>
 
   <script>
 
@@ -172,8 +238,70 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
     el.textContent = '';
   }
 
-  function openModal(id)  { $(id).classList.add('active');    document.body.style.overflow = 'hidden'; }
+  const loggedIn = <?= $loggedIn ? 'true' : 'false' ?>;
+  let currentRating = 0;
+  let currentSong = null;
+
+  function openModal(id)  { $(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
   function closeModal(id) { $(id).classList.remove('active'); document.body.style.overflow = ''; }
+
+  function setRatingStars(value) {
+    currentRating = value;
+    document.querySelectorAll('.starButton').forEach(btn => {
+      const btnValue = Number(btn.dataset.value);
+      btn.classList.toggle('active', btnValue <= value);
+    });
+  }
+
+  function openRatingModal(song, artist) {
+    if (!loggedIn) {
+      showToast('loginToast', 'Please log in to save ratings and comments.', 'error');
+      openModal('loginModal');
+      return;
+    }
+
+    currentSong = { song, artist };
+    $('ratingSong').value = song;
+    $('ratingArtist').value = artist;
+    $('ratingComment').value = '';
+    setRatingStars(0);
+    clearToast('ratingToast');
+    openModal('ratingModal');
+  }
+
+  async function loadProfileRatings() {
+    if (!loggedIn) {
+      return;
+    }
+
+    const profileList = $('profileList');
+    profileList.innerHTML = '<div class="profileEmpty">Loading your rated songs…</div>';
+
+    try {
+      const res = await fetch('ratings.php?action=getRatings');
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || 'Unable to load your ratings.');
+      }
+      if (!data.ratings || data.ratings.length === 0) {
+        profileList.innerHTML = '<div class="profileEmpty">No ratings yet — rate a featured song to save it here.</div>';
+        return;
+      }
+
+      profileList.innerHTML = data.ratings.map(item => `
+        <div class="profileCard">
+          <div>
+            <h3>${item.song_title}</h3>
+            <p class="profileArtist">${item.artist}</p>
+            <div class="profileRating">${'★'.repeat(item.rating)}${'☆'.repeat(5 - item.rating)}</div>
+          </div>
+          <p class="profileComment">${item.comment ? item.comment.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '<em>No comment provided.</em>'}</p>
+        </div>
+      `).join('');
+    } catch (error) {
+      profileList.innerHTML = `<div class="profileEmpty">${error.message}</div>`;
+    }
+  }
 
   $('openLoginBtn')  ?.addEventListener('click', () => openModal('loginModal'));
   $('openSignupBtn') ?.addEventListener('click', () => openModal('signupModal'));
@@ -186,9 +314,68 @@ $username = $loggedIn ? htmlspecialchars($_SESSION['username']) : '';
     $(id).addEventListener('click', e => { if (e.target === $(id)) closeModal(id); });
   });
 
+  const ratingSaveButton = $('ratingSave');
+  const ratingModalOverlay = $('ratingModal');
+
+  document.querySelectorAll('.song-card').forEach(card => {
+    card.addEventListener('click', () => openRatingModal(card.dataset.title, card.dataset.artist));
+  });
+
+  document.querySelectorAll('.starButton').forEach(btn => {
+    btn.addEventListener('click', () => setRatingStars(Number(btn.dataset.value)));
+  });
+
+  $('closeRating').addEventListener('click', () => closeModal('ratingModal'));
+  ratingModalOverlay?.addEventListener('click', e => { if (e.target === ratingModalOverlay) closeModal('ratingModal'); });
+
+  ratingSaveButton?.addEventListener('click', async () => {
+    clearToast('ratingToast');
+
+    if (!currentSong) {
+      showToast('ratingToast', 'No song selected.', 'error');
+      return;
+    }
+    if (currentRating < 1) {
+      showToast('ratingToast', 'Please choose a star rating.', 'error');
+      return;
+    }
+
+    ratingSaveButton.disabled = true;
+    ratingSaveButton.textContent = 'Saving…';
+
+    const fd = new FormData();
+    fd.append('action', 'saveRating');
+    fd.append('song_title', currentSong.song);
+    fd.append('artist', currentSong.artist);
+    fd.append('rating', currentRating);
+    fd.append('comment', $('ratingComment').value.trim());
+
+    try {
+      const res = await fetch('ratings.php', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || 'Unable to save rating.');
+
+      showToast('ratingToast', data.message, 'success');
+      setTimeout(() => {
+        closeModal('ratingModal');
+        loadProfileRatings();
+        ratingSaveButton.disabled = false;
+        ratingSaveButton.textContent = 'Save Rating';
+      }, 800);
+    } catch (error) {
+      showToast('ratingToast', error.message, 'error');
+      ratingSaveButton.disabled = false;
+      ratingSaveButton.textContent = 'Save Rating';
+    }
+  });
+
   // Switch between modals
   $('switchToSignup').addEventListener('click', () => { closeModal('loginModal');  openModal('signupModal'); });
   $('switchToLogin') .addEventListener('click', () => { closeModal('signupModal'); openModal('loginModal'); });
+
+  if (loggedIn) {
+    loadProfileRatings();
+  }
 
   $('loginSubmit').addEventListener('click', async () => {
     clearToast('loginToast');
